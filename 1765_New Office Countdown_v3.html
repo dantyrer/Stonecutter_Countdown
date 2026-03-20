@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countdown</title>
+  <style>
+    :root { color-scheme: light dark; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background-image: url("https://media.ffycdn.net/eu/trainline/W4YRs2PKCAwGXbRGkx6m.gif?mod=v1/resize=2400");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* subtle overlay for legibility */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 0;
+    }
+
+    .time {
+      position: relative;
+      White-space: nowrap;
+      z-index: 1;
+      font-size: clamp(10px, 5.5vw, 550px);
+      font-weight: 700;
+      letter-spacing: 0.08px;
+      color: #fff;
+      text-align: center;
+      text-shadow: none;
+      white-space: nowrap;
+    }
+
+    .done {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      font-weight: 600;
+      color: #fff;
+      display: none;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <div class="time">
+      <span id="days">—</span>d&nbsp;
+      <span id="hours">—</span>h&nbsp;
+      <span id="minutes">—</span>m&nbsp;
+      <span id="seconds">—</span>s
+    </div>
+    <div class="done" id="done">Welcome to Stonecutter!</div>
+  </div>
+
+  <script>
+    const endDate = new Date(2026, 3, 7, 0, 0, 0); // April 7, 2026
+
+    const d = document.getElementById('days');
+    const h = document.getElementById('hours');
+    const m = document.getElementById('minutes');
+    const s = document.getElementById('seconds');
+    const done = document.getElementById('done');
+
+    const pad2 = n => String(n).padStart(2, '0');
+
+    function tick() {
+      const now = new Date();
+      let diff = endDate - now;
+
+      if (diff <= 0) {
+        d.textContent = '0';
+        h.textContent = '00';
+        m.textContent = '00';
+        s.textContent = '00';
+        done.style.display = 'block';
+        clearInterval(timer);
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      d.textContent = days;
+      h.textContent = pad2(hours);
+      m.textContent = pad2(minutes);
+      s.textContent = pad2(seconds);
+    }
+
+    tick();
+    const timer = setInterval(tick, 1000);
+  </script>
+
+</body>
+</html>
